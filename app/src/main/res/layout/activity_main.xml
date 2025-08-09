@@ -22,6 +22,13 @@
         android:orientation="vertical"
         android:visibility="gone">
 
+        <ImageView
+            android:layout_marginTop="200dp"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center"
+            android:src="@drawable/no_wifi" />
+
         <TextView
             android:id="@+id/no_connection_text"
             android:textColor="@color/black"
