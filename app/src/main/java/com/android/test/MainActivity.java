@@ -1,6 +1,9 @@
 package com.android.test;
 
 import android.os.Bundle;
+import android.view.View;
+import android.webkit.WebSettings;
+import android.webkit.WebViewClient;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
     // This allows direct access to all views in the layout via View Binding
     private ActivityMainBinding binding;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,5 +32,24 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        //webView will be visible to the user
+        binding.webView.setVisibility(View.VISIBLE);
+
+        WebSettings webSettings = binding.webView.getSettings(); // configuration object for web_view
+        webSettings.setDomStorageEnabled(true); //enables HTML5 DOM storage, needed for storing client-side data
+        webSettings.setJavaScriptEnabled(true); //allows javaScript execution inside web_view
+        webSettings.setDatabaseEnabled(true); //enables the use of HTML5 Web SQL DB, Some older sites still rely on it for offline storage
+        webSettings.setCacheMode(WebSettings.LOAD_DEFAULT); //use cached resources when available, otherwise load from the network,
+                                                            // efficient for load speed and network usage
+        webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW); //controls loading of mixed content
+                                                                                //“Mixed” = site is HTTPS but tries to load HTTP resources.
+        webSettings.setLoadsImagesAutomatically(true);//Allows the WebView to load images automatically when the page loads.
+        webSettings.setAllowFileAccess(true); //lets webView read local files from device
+        webSettings.setAllowContentAccess(true); //Allows the WebView to access content from content providers (content:// URIs).
+
+        binding.webView.setWebViewClient(new WebViewClient());
+        //since we are using view binding, so that we can use web_view in layout like this: binding.webView
+        binding.webView.loadUrl("https://www.ajou.uz");
+
     }
 }
