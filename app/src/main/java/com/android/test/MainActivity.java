@@ -2,6 +2,8 @@ package com.android.test;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
@@ -57,13 +59,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //checks whether device have active connection to the Internet
-    private boolean isConnected(){
-        //gets the system's connectivity service
+    private boolean isConnected() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        //Ask the connectivity manager for details about the currently active network
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        //If there is an active network AND it's marked as connected, return true
-        return activeNetwork != null && activeNetwork.isConnected();
 
+        if (cm == null) return false;
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            // For Android Marshmallow (API 23) and above
+            Network network = cm.getActiveNetwork();
+            if (network == null) return false;
+
+            NetworkCapabilities capabilities = cm.getNetworkCapabilities(network);
+            return capabilities != null &&
+                    capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) &&
+                    capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED);
+        } else {
+            // For devices below Android M (old method)
+            NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+            return activeNetwork != null && activeNetwork.isConnected();
+        }
     }
+
 }
