@@ -1,5 +1,8 @@
 package com.android.test;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebSettings;
@@ -50,6 +53,17 @@ public class MainActivity extends AppCompatActivity {
         binding.webView.setWebViewClient(new WebViewClient());
         //since we are using view binding, so that we can use web_view in layout like this: binding.webView
         binding.webView.loadUrl("https://www.ajou.uz");
+
+    }
+
+    //checks whether device have active connection to the Internet
+    private boolean isConnected(){
+        //gets the system's connectivity service
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        //Ask the connectivity manager for details about the currently active network
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        //If there is an active network AND it's marked as connected, return true
+        return activeNetwork != null && activeNetwork.isConnected();
 
     }
 }
