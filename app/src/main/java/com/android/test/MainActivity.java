@@ -12,6 +12,8 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import androidx.activity.OnBackPressedCallback;
 import androidx.core.splashscreen.SplashScreen;
 
 
@@ -50,9 +52,6 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        checkConnectionAndLoad(); //checks device connected to the internet or not
-        binding.retryButton.setOnClickListener(v-> checkConnectionAndLoad());
-
         WebSettings webSettings = binding.webView.getSettings(); // configuration object for web_view
         webSettings.setDomStorageEnabled(true); //enables HTML5 DOM storage, needed for storing client-side data
         webSettings.setJavaScriptEnabled(true); //allows javaScript execution inside web_view
@@ -64,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         webSettings.setLoadsImagesAutomatically(true);//Allows the WebView to load images automatically when the page loads.
         webSettings.setAllowFileAccess(true); //lets webView read local files from device
         webSettings.setAllowContentAccess(true); //Allows the WebView to access content from content providers (content:// URIs).
+
 
         binding.webView.setWebViewClient(new WebViewClient() {
             @Override
@@ -82,6 +82,18 @@ public class MainActivity extends AppCompatActivity {
 
         checkConnectionAndLoad(); //checks device connected to the internet or not
         binding.retryButton.setOnClickListener(v-> checkConnectionAndLoad());
+
+        // Back button support
+        this.getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (binding.webView.canGoBack()) {
+                    binding.webView.goBack();
+                } else {
+                    finish();
+                }
+            }
+        });
 
     }
 // checks whether device connected to the Internet or not, if not shows "no connection" layout
@@ -122,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
         binding.webView.stopLoading();
         binding.webView.clearHistory();
         binding.webView.clearCache(true);
-        binding.webView.loadUrl("https://www.ajou.uz");
+        binding.webView.loadUrl("https://wintrchess.com/analysis#google_vignette");
     }
 
 }
