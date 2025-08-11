@@ -37,9 +37,9 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         checkConnectionAndLoad();
-        //webView will be visible to the user
-        binding.webView.setVisibility(View.VISIBLE);
+        binding.retryButton.setOnClickListener(v-> checkConnectionAndLoad());
 
         WebSettings webSettings = binding.webView.getSettings(); // configuration object for web_view
         webSettings.setDomStorageEnabled(true); //enables HTML5 DOM storage, needed for storing client-side data
@@ -55,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
 
         binding.webView.setWebViewClient(new WebViewClient());
         //since we are using view binding, so that we can use web_view in layout like this: binding.webView
-        binding.webView.loadUrl("https://www.ajou.uz");
 
     }
 // checks whether device connected to the Internet or not, if not shows "no connection" layout
@@ -63,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         if(isConnected()){
             binding.noConnectionLayout.setVisibility(View.GONE);
             binding.webView.setVisibility(View.VISIBLE);
+            loadWebView();
         }else{
             binding.noConnectionLayout.setVisibility(View.VISIBLE);
             binding.webView.setVisibility(View.GONE);
@@ -89,6 +89,13 @@ public class MainActivity extends AppCompatActivity {
             NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
             return activeNetwork != null && activeNetwork.isConnected();
         }
+    }
+
+    private void loadWebView(){
+        binding.webView.stopLoading();
+        binding.webView.clearHistory();
+        binding.webView.clearCache(true);
+        binding.webView.loadUrl("https://www.ajou.uz");
     }
 
 }
