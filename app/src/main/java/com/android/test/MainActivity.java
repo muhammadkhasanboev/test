@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        checkConnectionAndLoad();
         //webView will be visible to the user
         binding.webView.setVisibility(View.VISIBLE);
 
@@ -56,6 +57,16 @@ public class MainActivity extends AppCompatActivity {
         //since we are using view binding, so that we can use web_view in layout like this: binding.webView
         binding.webView.loadUrl("https://www.ajou.uz");
 
+    }
+// checks whether device connected to the Internet or not, if not shows "no connection" layout
+    private void checkConnectionAndLoad(){
+        if(isConnected()){
+            binding.noConnectionLayout.setVisibility(View.GONE);
+            binding.webView.setVisibility(View.VISIBLE);
+        }else{
+            binding.noConnectionLayout.setVisibility(View.VISIBLE);
+            binding.webView.setVisibility(View.GONE);
+        }
     }
 
     //checks whether device have active connection to the Internet

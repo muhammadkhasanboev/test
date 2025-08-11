@@ -15,34 +15,37 @@
         android:fitsSystemWindows="false"/>
 
     <LinearLayout
-        android:textAlignment="@string/no_connection_text"
+        android:id="@+id/no_connection_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <ImageView
-            android:layout_marginTop="200dp"
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:layout_gravity="center"
+            android:contentDescription="noConnection"
             android:src="@drawable/no_wifi" />
 
         <TextView
-            android:id="@+id/no_connection_text"
+            android:layout_width="243dp"
+            android:layout_height="84dp"
+            android:gravity="center"
+            android:text="@string/no_connection_text"
             android:textColor="@color/black"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"/>
+            android:layout_marginBottom="50.dp"/>
 
         <Button
             android:id="@+id/retry_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="@drawable/retry_corner"
             android:text="@string/retry"
-            android:background="#050505"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp" />
 
 
     </LinearLayout>
