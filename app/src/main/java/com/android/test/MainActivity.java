@@ -7,8 +7,13 @@ import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import androidx.core.splashscreen.SplashScreen;
+
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,15 +27,22 @@ public class MainActivity extends AppCompatActivity {
     // Declare a variable to hold the generated binding class for activity_main.xml
     // This allows direct access to all views in the layout via View Binding
     private ActivityMainBinding binding;
+    private boolean pageLoaded = false;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        splashScreen.setKeepOnScreenCondition(()->{
+            if(!isConnected()) return false;
+            return !pageLoaded;
+        });
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.main, (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -38,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        checkConnectionAndLoad();
+        checkConnectionAndLoad(); //checks device connected to the internet or not
         binding.retryButton.setOnClickListener(v-> checkConnectionAndLoad());
 
         WebSettings webSettings = binding.webView.getSettings(); // configuration object for web_view
@@ -53,8 +65,23 @@ public class MainActivity extends AppCompatActivity {
         webSettings.setAllowFileAccess(true); //lets webView read local files from device
         webSettings.setAllowContentAccess(true); //Allows the WebView to access content from content providers (content:// URIs).
 
-        binding.webView.setWebViewClient(new WebViewClient());
-        //since we are using view binding, so that we can use web_view in layout like this: binding.webView
+        binding.webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                pageLoaded = true;
+            }
+
+            @Override
+            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+                super.onReceivedError(view, request, error);
+                binding.webView.setVisibility(View.GONE);
+                binding.noConnectionLayout.setVisibility(View.VISIBLE);
+            }
+        });
+
+        checkConnectionAndLoad(); //checks device connected to the internet or not
+        binding.retryButton.setOnClickListener(v-> checkConnectionAndLoad());
 
     }
 // checks whether device connected to the Internet or not, if not shows "no connection" layout
