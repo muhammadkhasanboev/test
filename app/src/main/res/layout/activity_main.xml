@@ -27,15 +27,19 @@
             android:layout_height="120dp"
             android:layout_gravity="center"
             android:contentDescription="noConnection"
-            android:src="@drawable/no_wifi" />
+            android:src="@drawable/no_wifi"
+            app:tint="?attr/colorOnBackground"/>
+
 
         <TextView
-            android:layout_width="243dp"
-            android:layout_height="84dp"
-            android:gravity="center"
-            android:text="@string/no_connection_text"
-            android:textColor="@color/black"
-            android:layout_marginBottom="50.dp"/>
+            android:text="@string/no_internet_connection"
+            android:textSize="18sp"
+            android:textColor="?attr/colorOnBackground"
+            android:layout_marginBottom="50dp"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content" />
+
 
         <Button
             android:id="@+id/retry_button"
@@ -43,10 +47,12 @@
             android:layout_height="wrap_content"
             android:backgroundTint="#FF000000"
             android:background="@drawable/retry_corner"
-            android:text="@string/retry"
+            android:text="@string/retry_button"
             android:textColor="#FFFFFFFF"
             android:layout_marginRight="30dp"
-            android:layout_marginLeft="30dp" />
+            android:layout_marginLeft="30dp"
+            android:tint="?attr/colorOnBackground"/>
+
 
 
     </LinearLayout>

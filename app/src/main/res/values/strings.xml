@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">test</string>
-    <string name="no_connection_text">Oops… Please check your Internet</string>
-    <string name="retry">Retry</string>
+    <string name="no_internet_connection">Oops… Please check your Internet</string>
+    <string name="retry_button">Retry</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.android.test;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
@@ -21,6 +22,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.android.test.databinding.ActivityMainBinding;
@@ -52,11 +54,18 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+        // Make status bar and navigation bar transparent
+        getWindow().setStatusBarColor(Color.TRANSPARENT);
+        getWindow().setNavigationBarColor(Color.TRANSPARENT);
+
+// Tell the system not to fit content inside system windows
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+
         WebSettings webSettings = binding.webView.getSettings(); // configuration object for web_view
         webSettings.setDomStorageEnabled(true); //enables HTML5 DOM storage, needed for storing client-side data
         webSettings.setJavaScriptEnabled(true); //allows javaScript execution inside web_view
         webSettings.setDatabaseEnabled(true); //enables the use of HTML5 Web SQL DB, Some older sites still rely on it for offline storage
-        webSettings.setCacheMode(WebSettings.LOAD_DEFAULT); //use cached resources when available, otherwise load from the network,
+//        webSettings.setCacheMode(WebSettings.LOAD_DEFAULT); //use cached resources when available, otherwise load from the network,
                                                             // efficient for load speed and network usage
         webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW); //controls loading of mixed content
                                                                                 //“Mixed” = site is HTTPS but tries to load HTTP resources.

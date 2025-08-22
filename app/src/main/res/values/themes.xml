@@ -14,5 +14,7 @@
         <item name="postSplashScreenTheme">@style/Theme.Test</item>
     </style>
 
-    <style name="Theme.Test" parent="Base.Theme.Test" />
+    <style name="Theme.Test" parent="Base.Theme.Test">
+        <item name="colorPrimary">#0f2972</item>
+    </style>
 </resources>
